@@ -1,9 +1,8 @@
 import express from 'express';
+import { getAllMeetups } from '../controllers/meetupController.js';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.json([{ id: 1, title: 'Meeetup testowy' }]);
-});
+router.get('/', getAllMeetups);
 
 export default router;

@@ -5,11 +5,12 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
-app.use('/api/meetups', meetupRouter);
 
 app.get('/', (_req, res) => {
   res.send('Hello from Gatherly backend!');
 });
+
+app.use('/api/meetups', meetupRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on server ${PORT}`);
