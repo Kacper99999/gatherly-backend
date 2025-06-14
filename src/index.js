@@ -1,5 +1,8 @@
 import express from 'express';
 import meetupRouter from './routes/meetupRouter.js';
+import mongoose from 'mongoose';
+
+const MONGO_URL = 'mongodb://localhost:27017/gatherly';
 
 const app = express();
 
@@ -12,6 +15,14 @@ app.get('/', (_req, res) => {
 
 app.use('/api/meetups', meetupRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server running on server ${PORT}`);
-});
+mongoose
+  .connect(MONGO_URL)
+  .then(() => {
+    console.log('Połaczono MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Server running on server ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log('Błąd z połaczeniem MongoDB', err);
+  });

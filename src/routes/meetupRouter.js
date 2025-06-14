@@ -1,8 +1,8 @@
 import express from 'express';
-import { getAllMeetups } from '../controllers/meetupController.js';
+import { createTestMeetup } from '../controllers/meetupController.js';
 
 const router = express.Router();
 
-router.get('/', getAllMeetups);
+router.post('/test', createTestMeetup);
 
 export default router;

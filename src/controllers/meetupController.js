@@ -1,8 +1,18 @@
-const mockMeetups = [
-  { id: 1, title: 'react meetup', location: 'New York', date: '2025-07-23' },
-  { id: 2, title: 'node night', location: 'Sydney', date: '2025-11-03' },
-];
+import Meetup from '../models/meetup.js';
 
-export const getAllMeetups = (req, res) => {
-  res.json(mockMeetups);
+export const createTestMeetup = async (req, res) => {
+  try {
+    const { title, date, location } = req.body;
+    const newMeetup = new Meetup({
+      title,
+      date,
+      location,
+    });
+
+    await newMeetup.save();
+    res.status(201).json(newMeetup);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Bład tworzenia meetupu' });
+  }
 };
