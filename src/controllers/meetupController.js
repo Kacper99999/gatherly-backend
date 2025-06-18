@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Meetup from '../models/meetup.js';
 
 export const createMeetup = async (req, res) => {
@@ -21,6 +22,22 @@ export const getMeetups = async (_req, res) => {
   try {
     const meetups = await Meetup.find();
     res.status(200).json(meetups);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const getMeetupByID = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(400).json({ message: 'Nieprawidłowe ID meetupu' });
+  }
+  try {
+    const meetup = await Meetup.findById(id);
+    if (!meetup) {
+      res.status(404).json({ message: 'Meetup nie został znaleziony' });
+    }
+    res.status(200).json({ meetup });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
