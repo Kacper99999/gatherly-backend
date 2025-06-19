@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import Meetup from '../models/meetup.js';
-import { json } from 'express';
 
 export const createMeetup = async (req, res) => {
   try {
@@ -15,6 +14,9 @@ export const createMeetup = async (req, res) => {
     await newMeetup.save();
     res.status(201).json(newMeetup);
   } catch (err) {
+    if(err.name ==='ValidationError'){
+      return res.status(400).json({message:err.message})
+    }
     res.status(500).json({ message: err.message });
   }
 };
@@ -59,6 +61,9 @@ export const updateMeetup = async (req, res) => {
     }
     res.status(200).json({ updatedMeetup });
   } catch (err) {
+    if(err.name ==='ValidationError'){
+      return res.status(400).json({message:err.message})
+    }
     res.status(500).json({ message: err.message });
   }
 };
