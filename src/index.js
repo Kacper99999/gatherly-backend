@@ -1,6 +1,6 @@
 import express from 'express';
 import meetupRouter from './routes/meetupRouter.js';
-import userRouter from './routes/userRouter.js'
+import userRouter from './routes/userRouter.js';
 import mongoose from 'mongoose';
 
 const MONGO_URL = 'mongodb://localhost:27017/gatherly';
@@ -14,7 +14,7 @@ app.get('/', (_req, res) => {
   res.send('Hello from Gatherly backend!');
 });
 
-app.use('/api/users',userRouter);
+app.use('/api/users', userRouter);
 app.use('/api/meetups', meetupRouter);
 
 mongoose

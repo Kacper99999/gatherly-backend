@@ -24,3 +24,16 @@ export const register = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const logIn = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const checkUser = await User.findOne({ email: email.toLowerCase() });
+    if (!checkUser || !(await bcrypt.compare(password, checkUser.password))) {
+      res.status(400).json({ message: 'Nieprawydłowy e-mail lub hasło' });
+    }
+    res.status(200).json({ message: 'Poprawne logowanie' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
