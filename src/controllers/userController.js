@@ -1,5 +1,6 @@
 import User from '../models/user.js';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 export const register = async (req, res) => {
   try {
@@ -28,11 +29,24 @@ export const register = async (req, res) => {
 export const logIn = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const checkUser = await User.findOne({ email: email.toLowerCase() });
-    if (!checkUser || !(await bcrypt.compare(password, checkUser.password))) {
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       res.status(400).json({ message: 'Nieprawydłowy e-mail lub hasło' });
     }
-    res.status(200).json({ message: 'Poprawne logowanie' });
+    const token = jwt.sign(
+        {userId:user._id},
+        process.env.JWT_SECRET,
+        {expiresIn:'1h'}
+    )
+    res.status(200).json({ 
+        message: 'Poprawne logowanie',
+        token,
+        user:{
+            id:user._id,
+            email:user.email,
+            username:user.username
+        }
+     });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
