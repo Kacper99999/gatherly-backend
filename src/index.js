@@ -2,10 +2,12 @@ import express from 'express';
 import meetupRouter from './routes/meetupRouter.js';
 import userRouter from './routes/userRouter.js';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-const MONGO_URL = 'mongodb://localhost:27017/gatherly';
 
 const app = express();
+
+dotenv.config()
 
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
@@ -18,7 +20,7 @@ app.use('/api/users', userRouter);
 app.use('/api/meetups', meetupRouter);
 
 mongoose
-  .connect(MONGO_URL)
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log('Połaczono MongoDB');
     app.listen(PORT, () => {
