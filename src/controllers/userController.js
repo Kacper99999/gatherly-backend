@@ -33,20 +33,18 @@ export const logIn = async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       res.status(400).json({ message: 'Nieprawydłowy e-mail lub hasło' });
     }
-    const token = jwt.sign(
-        {userId:user._id},
-        process.env.JWT_SECRET,
-        {expiresIn:'1h'}
-    )
-    res.status(200).json({ 
-        message: 'Poprawne logowanie',
-        token,
-        user:{
-            id:user._id,
-            email:user.email,
-            username:user.username
-        }
-     });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
+    res.status(200).json({
+      message: 'Poprawne logowanie',
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+      },
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
